@@ -3,31 +3,31 @@ clear
 close all
 
 %% incarcare imagine
-imagIncarcata = rgb2gray(im2double(imread('tema17.png')));
-% imagIncarcata = rgb2gray(im2double(imread('images.jfif')));
-% imagIncarcata = rgb2gray(im2double(imread('download.png')));
+% imagIncarcata = rgb2gray(im2double(imread('tema17.png')));
+imagIncarcata = rgb2gray(im2double(imread('images.jfif')));
+% imagIncarcata = rgb2gray(im2double(imread('download1.png')));
 
 % imagIncarcata = filtrare_zgomot_sarepiper(imagIncarcata);
 %  imagIncarcata = filtrare_zgomot_uniform(imagIncarcata);
 
-% figure(1)
-% imshow(imagIncarcata)
+figure(1)
+imshow(imagIncarcata)
 
-%% aplicare filtru uniform pe imaginea incarcata
-imagFiltrata = filtrare_zgomot_sarepiper(imagIncarcata);
-figure()
-title("")
-imshow(imagFiltrata)
+ %% aplicare filtru uniform pe imaginea incarcata
+% imagFiltrata = filtrare_zgomot_uniform(imagIncarcata);
+% figure()
+% title("")
+% imshow(imagFiltrata)
 %% dimensiuni imagine
 [Lini,Coloane] = size (imagIncarcata);
 
 %% segmentarea imaginii
-imagSegmentata = segmentare(imagFiltrata);
+imagSegmentata = segmentare(imagIncarcata);
 figure()
 imshow(imagSegmentata)
 
 %% aflare margine tabla
-margine_tabla_L = length(find(imagSegmentata(Lini-10,1:10) == 1 ));
+margine_tabla_L = numel(find(imagSegmentata(Lini-10,1:10) == 1 ));
 margine_tabla_C = length(find(imagSegmentata(Lini-10:Lini,10) == 1 ));
 
 %% aflare numar si coloane un chenar
@@ -51,9 +51,9 @@ k = 0;
 for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
     for C = margine_tabla_C:ColoaneUnPatrat:Coloane-ColoaneUnPatrat
         %%
-        if k==64
-            return;
-        end
+%         if k==64
+%             return;
+%         end
         k = k+1;
         z=mod(culoare_chenar,2);
         z = z+1;
@@ -64,8 +64,17 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
             end
         end
         
-        mijlocChenar = chenar(l-ceil(LiniiUnPatrat)/2-7:l-ceil(LiniiUnPatrat)/2+7,c-ceil(ColoaneUnPatrat)/2-7:c-ceil(ColoaneUnPatrat)/2+7);
         
+        lm = floor(LiniiUnPatrat/3);
+        cm = floor(ColoaneUnPatrat/3);
+
+
+        %        mijlocChenar = chenar(l-ceil(LiniiUnPatrat/2)-10:l-ceil(LiniiUnPatrat/2)+10,c-ceil(ColoaneUnPatrat/2)-10:c-ceil(ColoaneUnPatrat/2)+10);
+%                 mijlocChenar = chenar(l-LiniiUnPatrat+2:l-4,c-ceil(ColoaneUnPatrat/2)-1:c-ceil(ColoaneUnPatrat/2)+1);
+%        mijlocChenar = chenar(l-ceil(LiniiUnPatrat/4)-floor(LiniiUnPatrat/4):l-ceil(LiniiUnPatrat/4)+floor(LiniiUnPatrat/4),...
+%             c-ceil(ColoaneUnPatrat/4)-floor(ColoaneUnPatrat/4):c-ceil(ColoaneUnPatrat/4)+floor(ColoaneUnPatrat/4));
+%         mijlocChenar = chenar(l-LiniiUnPatrat+lm:l-lm,cx-2:cx+2);
+
         pixeliAlbi = numel(find(mijlocChenar == 1));
         pixeliNegrii = numel(find(mijlocChenar == 0));
         
@@ -73,7 +82,7 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
             tip_chenar = "chenar alb gol";
             contor_chenare_albe_libere = contor_chenare_albe_libere+1;
             disp("chenarul alb")
-            disp(k) 
+            disp(k)
             disp("este gol")
             disp("---------")
             continue
@@ -82,8 +91,8 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
         if (pixeliNegrii == numel(mijlocChenar))
             tip_chenar = "chenar negru gol";
             contor_chenare_negre_libere = contor_chenare_negre_libere+1;
-            disp("chenarul negru") 
-            disp(k) 
+            disp("chenarul negru")
+            disp(k)
             disp("este gol")
             disp("---------")
             continue
@@ -91,7 +100,7 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
         
         if (pixeliAlbi ~= pixeliNegrii)
             tip_chenar = "cu piesa";
-            if (pixeliAlbi > pixeliNegrii)
+            if (pixeliAlbi> pixeliNegrii)
                 piesa = "alba";
                 contor_piese_albe = contor_piese_albe+1;
                 disp("piesa alba pe chenarul")
@@ -104,18 +113,18 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
                 disp(k)
                 disp("---------")
             end
-        end  
-         
-
+        end
         
         
+        
+        figure(6)
+        imshow(chenar)
+%         pause(0.5)
         
     end
     
 end
 
 
-
-        figure(6)
-        imshow(chenar)
-        pause(1)
+figure(6)
+imshow(chenar)
