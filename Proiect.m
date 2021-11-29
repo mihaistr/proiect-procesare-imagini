@@ -14,7 +14,7 @@ imagIncarcata = rgb2gray(im2double(imread('tema17.png')));
 % imshow(imagIncarcata)
 
 %% aplicare filtru uniform pe imaginea incarcata
-imagFiltrata = filtrare_zgomot_uniform(imagIncarcata);
+imagFiltrata = filtrare_zgomot_sarepiper(imagIncarcata);
 figure()
 title("")
 imshow(imagFiltrata)
@@ -42,6 +42,8 @@ culoare_chenar = 1; % 1-alb, 0-negru ; impar alb, par negru
 
 contor_piese_negre = 0;
 contor_piese_albe  = 0;
+contor_chenare_negre_libere = 0;
+contor_chenare_albe_libere = 0;
 
 ArieCheanr = ColoaneUnPatrat*LiniiUnPatrat;
 k = 0;
@@ -52,68 +54,59 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
         if k==64
             return;
         end
-        k = k+1
+        k = k+1;
         z=mod(culoare_chenar,2);
         z = z+1;
         
         for l = L+1:LiniiUnPatrat+L-1
             for c = C+1:ColoaneUnPatrat+C-1
                 chenar(l,c) = imagSegmentata(l,c);
-                
-                %                 if chenar(l,c)== 0
-                %                     pixeliNegrii = pixeliNegrii + 1;
-                %                 else
-                %                     pixeliAlbi = pixeliAlbi + 1;
-                %                 end
             end
         end
         
-        mijlocChenar = chenar(l-LiniiUnPatrat/2-5:l-LiniiUnPatrat/2+5,c-ColoaneUnPatrat/2-5:c-ColoaneUnPatrat/2+5);
+        mijlocChenar = chenar(l-ceil(LiniiUnPatrat)/2-7:l-ceil(LiniiUnPatrat)/2+7,c-ceil(ColoaneUnPatrat)/2-7:c-ceil(ColoaneUnPatrat)/2+7);
+        
         pixeliAlbi = numel(find(mijlocChenar == 1));
         pixeliNegrii = numel(find(mijlocChenar == 0));
+        
+        if (pixeliAlbi == numel(mijlocChenar))
+            tip_chenar = "chenar alb gol";
+            contor_chenare_albe_libere = contor_chenare_albe_libere+1;
+            disp("chenarul alb")
+            disp(k) 
+            disp("este gol")
+            disp("---------")
+            continue
+        end
+        
+        if (pixeliNegrii == numel(mijlocChenar))
+            tip_chenar = "chenar negru gol";
+            contor_chenare_negre_libere = contor_chenare_negre_libere+1;
+            disp("chenarul negru") 
+            disp(k) 
+            disp("este gol")
+            disp("---------")
+            continue
+        end
         
         if (pixeliAlbi ~= pixeliNegrii)
             tip_chenar = "cu piesa";
             if (pixeliAlbi > pixeliNegrii)
                 piesa = "alba";
                 contor_piese_albe = contor_piese_albe+1;
+                disp("piesa alba pe chenarul")
+                disp(k)
+                disp("---------")
             else
                 piesa = "neagra";
                 contor_piese_negre = contor_piese_negre+1;
+                disp("piesa neagra pe chenarul")
+                disp(k)
+                disp("---------")
             end
-        end
-        
-        if (pixeliAlbi ==121 )
-            tip_chenar = "chenar alb";
-        end
-        
-        if (pixeliNegrii == 121)
-            tip_chenar = "chenar negru";
-        end
-        %         if (pixeliAlbi == numel(mijlocChenar)) || (pixeliAlbi == numel(mijlocChenar))
-        %             piesa = "nu E piesa";
-        %
-        %         end
-        %
-        %         if (pixeliAlbi < pixeliNegrii)
-        %             piesa = "neagra";
-        %             contor_piese_negre = contor_piese_negre+1;
-        %         end
-        %         if (pixeliAlbi > pixeliNegrii)
-        %             piesa = "alba";
-        %             contor_piese_albe = contor_piese_albe+1;
-        %         end
-        
-        %         switch z
-        %             case 1 % negru
-        %
-        %             case 0 % alb
-        %         end
-        %         culoare_chenar = culoare_chenar+1;
-        
-        figure(6)
-        imshow(chenar)
-%         pause(1)
+        end  
+         
+
         
         
         
@@ -123,3 +116,6 @@ end
 
 
 
+        figure(6)
+        imshow(chenar)
+        pause(1)
