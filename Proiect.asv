@@ -49,7 +49,7 @@ k = 0;
 for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
     for C = margine_tabla_C:ColoaneUnPatrat:Coloane-ColoaneUnPatrat
         %%
-        if k==64
+        if k==9
             return;
         end
         k = k+1
