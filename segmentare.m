@@ -1,5 +1,7 @@
 function imagGray = segmentare(imagIncarcata)
 %% 2.	K-means clustering
+[linii,coloane] = size (imagIncarcata);
+
 c0_curent = min(min(imagIncarcata));
 c1_curent = max(max(imagIncarcata));
 
@@ -7,7 +9,7 @@ c0_anterior = 0;
 c1_anterior = 0;
 k = 0;
 imagGray = imagIncarcata;
-while c0_curent ~= c0_anterior && c1_curent ~= c1_anterior
+while c0_curent ~= c0_anterior || c1_curent ~= c1_anterior
 k = k+1;
     for i = 1:linii
         for j = 1:coloane
