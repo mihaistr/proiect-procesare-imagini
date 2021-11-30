@@ -9,20 +9,20 @@ imagIncarcata = rgb2gray(im2double(imread('images.jfif')));
 
 figure(1)
 imshow(imagIncarcata)
-
+title("imagine incarcata")
 %% aplicare filtru uniform pe imaginea incarcata
-% imagFiltrata = filtrare_zgomot_uniform(imagIncarcata);
-% figure()
-% title("")
-% imshow(imagFiltrata)
+imagFiltrata = filtrare_zgomot_uniform(imagIncarcata);
+figure()
+imshow(imagFiltrata)
+title("imagine filtrata")
 %% dimensiuni imagine
 [Lini,Coloane] = size (imagIncarcata);
 
 %% segmentarea imaginii
-imagSegmentata = segmentare(imagIncarcata);
+imagSegmentata = segmentare(imagFiltrata);
 figure()
 imshow(imagSegmentata)
-
+title("imagine segmentata")
 %% aflare margine tabla
 margine_tabla_L = length(find(imagSegmentata(Lini-10,1:10) == 1 ));
 margine_tabla_C = length(find(imagSegmentata(Lini-10:Lini,10) == 1 ));
@@ -123,6 +123,7 @@ for L = margine_tabla_L:LiniiUnPatrat:Lini-LiniiUnPatrat
         % afisare pe rand a pieselor
         figure(6)
         imshow(chenar)
+        title("chenar")
         pause(0.5)
         
     end
@@ -132,4 +133,5 @@ end
 % afisare finala a chenarului, utila in cazul in care ultimul chenar este gol
 % caz in care se trece la urmatoarea iteratie
 figure(6)
+title("chenar")
 imshow(chenar)
