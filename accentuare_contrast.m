@@ -1,5 +1,5 @@
 function ImagNou = accentuare_contrast(imag)
-imag = uint8(imag);
+imag = im2uint8(imag);
 %generare histograma
 [L,C] = size (imag);
 h = zeros(1, 255);
@@ -31,3 +31,4 @@ for i=1:L
     end
 end
 
+ImagNou = im2double(ImagNou);
